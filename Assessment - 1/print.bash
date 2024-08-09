@@ -1,5 +1,5 @@
 #!/bin/bash
 echo "Hello, World!"
 
-name="Alice"
+name="Mav"
 echo "Hello, $name!"

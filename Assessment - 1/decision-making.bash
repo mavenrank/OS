@@ -1,32 +1,8 @@
-#!/bin/bash
+echo "Enter a number: "
+read num
 
-for i in 1 2 3 4 5
-do
-  echo "Number: $i"
-done
-
-counter=1
-while [ $counter -le 5 ]
-do
-  echo "Counter: $counter"
-  ((counter++))
-done
-#!/bin/bash
-
-echo "Enter a character: "
-read char
-
-case $char in
-  [a-z] )
-    echo "You entered a lowercase letter."
-    ;;
-  [A-Z] )
-    echo "You entered an uppercase letter."
-    ;;
-  [0-9] )
-    echo "You entered a digit."
-    ;;
-  * )
-    echo "You entered a special character."
-    ;;
-esac
+if [ $num -gt 10 ]; then
+    echo "The number is greater than 10."
+else
+    echo "The number is 10 or less."
+fi
