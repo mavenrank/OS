@@ -1,8 +1,7 @@
 #include <stdio.h>
 
-#define MAX 10 // Maximum number of blocks and processes
+#define MAX 10
 
-// Function declarations
 void firstFit(int blockSize[], int m, int processSize[], int n);
 void bestFit(int blockSize[], int m, int processSize[], int n);
 void worstFit(int blockSize[], int m, int processSize[], int n);
@@ -10,9 +9,8 @@ void worstFit(int blockSize[], int m, int processSize[], int n);
 int main()
 {
     int blockSize[MAX], processSize[MAX];
-    int m, n, i, choice;
+    int m, n, i;
 
-    // Input number of blocks and their sizes
     printf("Enter number of memory blocks: ");
     scanf("%d", &m);
     printf("Enter sizes of %d memory blocks: ", m);
@@ -21,7 +19,6 @@ int main()
         scanf("%d", &blockSize[i]);
     }
 
-    // Input number of processes and their sizes
     printf("Enter number of processes: ");
     scanf("%d", &n);
     printf("Enter sizes of %d processes: ", n);
@@ -30,37 +27,25 @@ int main()
         scanf("%d", &processSize[i]);
     }
 
-    // Choose allocation algorithm
-    printf("Choose memory allocation algorithm:\n");
-    printf("1. First Fit\n");
-    printf("2. Best Fit\n");
-    printf("3. Worst Fit\n");
-    printf("Enter choice (1/2/3): ");
-    scanf("%d", &choice);
-
-    // Copy original block sizes for each allocation method
     int blockCopy[MAX];
+
     for (i = 0; i < m; i++)
     {
         blockCopy[i] = blockSize[i];
     }
+    firstFit(blockCopy, m, processSize, n);
 
-    // Call the selected allocation algorithm
-    switch (choice)
+    for (i = 0; i < m; i++)
     {
-    case 1:
-        firstFit(blockCopy, m, processSize, n);
-        break;
-    case 2:
-        bestFit(blockCopy, m, processSize, n);
-        break;
-    case 3:
-        worstFit(blockCopy, m, processSize, n);
-        break;
-    default:
-        printf("Invalid choice!\n");
-        break;
+        blockCopy[i] = blockSize[i];
     }
+    bestFit(blockCopy, m, processSize, n);
+
+    for (i = 0; i < m; i++)
+    {
+        blockCopy[i] = blockSize[i];
+    }
+    worstFit(blockCopy, m, processSize, n);
 
     return 0;
 }

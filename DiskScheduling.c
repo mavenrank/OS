@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
 void fcfs(int requests[], int n, int head) {
     int total_movement = 0;
@@ -16,38 +15,39 @@ void fcfs(int requests[], int n, int head) {
 }
 
 void sstf(int requests[], int n, int head) {
-    bool processed[n];
-    for (int i = 0; i < n; i++) processed[i] = false;
-
     int total_movement = 0;
+    int visited[n];
+    for (int i = 0; i < n; i++) visited[i] = 0;
+
     printf("\nSSTF Order of Requests: %d", head);
 
     for (int i = 0; i < n; i++) {
-        int min_distance = __INT_MAX__, closest_request = -1;
+        int min_distance = __INT_MAX__;
+        int closest = -1;
 
+        // Find the closest unvisited request
         for (int j = 0; j < n; j++) {
-            if (!processed[j] && abs(requests[j] - head) < min_distance) {
+            if (!visited[j] && abs(requests[j] - head) < min_distance) {
                 min_distance = abs(requests[j] - head);
-                closest_request = j;
+                closest = j;
             }
         }
 
+        visited[closest] = 1; // Mark the closest request as visited
         total_movement += min_distance;
-        head = requests[closest_request];
-        processed[closest_request] = true;
+        head = requests[closest];
         printf(" -> %d", head);
     }
 
     printf("\nTotal Head Movement (SSTF): %d\n", total_movement);
 }
 
-void scan(int requests[], int n, int head, bool direction) {
+void scan(int requests[], int n, int head, int direction) {
     int total_movement = 0;
-    printf("\nSCAN Order of Requests: %d", head);
-
     int sorted_requests[n];
     for (int i = 0; i < n; i++) sorted_requests[i] = requests[i];
 
+    // Sort the requests
     for (int i = 0; i < n - 1; i++) {
         for (int j = i + 1; j < n; j++) {
             if (sorted_requests[i] > sorted_requests[j]) {
@@ -58,26 +58,35 @@ void scan(int requests[], int n, int head, bool direction) {
         }
     }
 
+    // Find the position of the head in the sorted list
     int pos = 0;
     while (pos < n && sorted_requests[pos] < head) pos++;
 
-    if (direction) {  
+    printf("\nSCAN Order of Requests: %d", head);
+
+    if (direction == 1) {  // Moving right initially
+        // Move right to the end of the requests
         for (int i = pos; i < n; i++) {
             total_movement += abs(sorted_requests[i] - head);
             head = sorted_requests[i];
             printf(" -> %d", head);
         }
+
+        // Reverse direction and move left
         for (int i = pos - 1; i >= 0; i--) {
             total_movement += abs(sorted_requests[i] - head);
             head = sorted_requests[i];
             printf(" -> %d", head);
         }
-    } else {
+    } else {  // Moving left initially
+        // Move left to the beginning of the requests
         for (int i = pos - 1; i >= 0; i--) {
             total_movement += abs(sorted_requests[i] - head);
             head = sorted_requests[i];
             printf(" -> %d", head);
         }
+
+        // Reverse direction and move right
         for (int i = pos; i < n; i++) {
             total_movement += abs(sorted_requests[i] - head);
             head = sorted_requests[i];
@@ -89,8 +98,7 @@ void scan(int requests[], int n, int head, bool direction) {
 }
 
 int main() {
-    int n, head;
-    bool direction;
+    int n, head, direction;
 
     printf("Enter number of requests: ");
     scanf("%d", &n);
