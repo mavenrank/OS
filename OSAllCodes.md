@@ -682,6 +682,7 @@ int main() {
     return 0;
 }
 ```
+
 ## CPU Scheduling 
 
 ### SJF, FCFS, Priority and Round Robin
